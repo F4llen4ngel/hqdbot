@@ -10,5 +10,5 @@ async def main():
     orders = await service.get_orders(session, 1)
     print(orders)
 
-
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
