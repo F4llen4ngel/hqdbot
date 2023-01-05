@@ -1,13 +1,11 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-
-
-from lib.database.models import Order
+from lib.database.models import *
 
 
 async def get_orders(session: AsyncSession, user_id: int):
-    stmt = select(Order).where(Order.user_id == user_id)
-    result = await session.execute(stmt)
+    result = await session.execute(
+        select(Order).where(Order.user_id == user_id))
     return result.scalars().all()
 
 

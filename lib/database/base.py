@@ -3,19 +3,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-
-DATABASE_URL = "postgresql+asyncpg://hqd_db:hqd_password_1337@localhost/hqd_db"
-
+DATABASE_URL = "postgresql+asyncpg://postgres:postgres@localhost/hqd_db"
 
 engine = create_async_engine(DATABASE_URL, echo=True)
 
-
 Base = declarative_base()
 
-
-async_session = sessionmaker(
-    engine, class_ = AsyncSession, expire_on_commit=False
-)
+async_session = sessionmaker(engine,
+                             class_=AsyncSession,
+                             expire_on_commit=False)
 
 
 async def init_models():
@@ -25,4 +21,5 @@ async def init_models():
 
 
 async def get_session() -> AsyncSession:
-    yield async_session()
+    async with AsyncSession(engine) as session:
+        return session
